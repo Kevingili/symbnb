@@ -23,7 +23,9 @@ class BookingController extends AbstractController
     public function book(Ad $ad, Request $request, ObjectManager $manager)
     {
         $booking = new Booking;
-        $form = $this->createForm(BookingType::class, $booking);
+        $form = $this->createForm(BookingType::class, $booking, [
+            'validation_groups' => [ 'front']
+        ]);
 
         $form->handleRequest($request);
 
@@ -45,9 +47,7 @@ class BookingController extends AbstractController
 
                 return $this->redirectToRoute('booking_show', ["id" => $booking->getId(), "withAlert" => true]);
             }
-
         }
-
         return $this->render('booking/book.html.twig', [
             'ad' => $ad,
             'form' => $form->createView(),
